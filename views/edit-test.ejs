@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="/styles/exam.css">
+    <link rel="stylesheet" href="/styles/header.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+
+    <script src="/scripts/jquery.min.js"></script>
+    <script src="/scripts/utils.js" defer></script>
+    <script src="/scripts/edit-test.js" defer></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        var data = JSON.parse( '<%- json %>' )
+    </script>
+</head>
+<body>
+    
+    <%-include('partials/header-simple')%>    
+
+    <!-- <% let from = new Date(xam.available.from)%>
+    <% let to = new Date(xam.available.to)%> -->
+
+    <main>
+        <div class="wrapper">
+
+            <h2 class="title"><%= xam.title %></h2>
+            
+            <h3 class="sub-head"> Details</h3>
+
+            <div class="block center detail edit">
+
+                <div class="exam-info center">
+                    <div class="exam-icon center">
+                        <img src="/icons/clock.png" alt="">
+                    </div>
+                    <div class="info">
+                        <div class="val">
+                            <input type="datetime-local" name="" id="fromtime" data-set="<%= xam.available.from %>">
+                        </div>
+                        <p class="key">Starting Date Time</p>
+                    </div>
+                </div>
+
+                <div class="exam-info center">
+                    <div class="exam-icon center">
+                        <img src="/icons/clock.png" alt="">
+                    </div>
+                    <div class="info">
+                        <div class="val">
+                            <input type="datetime-local" name="" id="totime" data-set="<%= xam.available.to %>">
+                        </div>
+                        <p class="key">Ending Date Time</p>
+                    </div>
+                </div>
+
+                <div class="exam-info center">
+                    <div class="exam-icon center">
+                        <img src="/icons/duration.svg" alt="">
+                    </div>
+                    <div class="info">
+                        <div class="val">
+                            <input type="number" name="" id="hours"   title="hours" placeholder="hrs" min="0" max="12" value="<%= Math.floor(xam.duration / 3600) %>">
+                            <input type="number" name="" id="minutes" title="minutes" placeholder="min" min="0" max="59" value="<%= Math.floor(xam.duration / 60) % 60  %>">
+                            <input type="number" name="" id="seconds" title="seconds" placeholder="sec" min="0" max="59" value="<%= xam.duration % 60 %>">
+                        </div>
+                        <p class="key">Duration (hh:mm:ss)</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="block center detail">
+            
+                <div class="exam-info center">
+                    <div class="exam-icon center">
+                        <img src="/icons/correct-ans.svg" alt="">
+                    </div>
+                    <div class="info">
+                        <div class="val">
+                            <input type="number" id="correct" style="color: rgb(3, 180, 3);" value="<%= xam.marks.correct %>">
+                        </div>
+                        <p class="key">for correct answer</p>
+                    </div>
+                </div>
+
+                <div class="exam-info center">
+                    <div class="exam-icon center">
+                        <img src="/icons/wrong-ans.svg" alt="">
+                    </div>
+                    <div class="info">
+                        <div class="val">
+                            <input type="number" id="wrong" style="color : rgb(252, 57, 57)" value="<%= xam.marks.wrong %>">
+                        </div>
+                        <p class="key">for wrong answer</p>
+                    </div>
+                </div>
+
+                <div class="exam-info center">
+                    <div class="exam-icon center">
+                        <img src="/icons/passmark.svg" alt="">
+                    </div>
+                    <div class="info">
+                        <div class="val">
+                            <input type="number" id="passmark" value="<%= xam.passMarks %>">
+                        </div>
+                        <p class="key">pass mark</p>
+                    </div>
+                </div>
+
+                <div class="exam-info center">
+                    <div class="exam-icon center">
+                        <img src="/icons/trophies.svg" alt="">
+                    </div>
+                    <div class="info">
+                        <div class="val">
+                            <input type="text" name="" id="trophies" value="<%= xam.trophies %>">
+                        </div>
+                        <p class="key">trophies</p>
+                    </div>
+                </div>
+
+            </div>
+            
+            <h3 class="sub-head"> Questions</h3>
+
+            <div class="questions center"> 
+                <!-- <div class="question-block center">
+                    <p class="index">2</p>
+                    <textarea class="q" placeholder="Question" spellcheck="false" rows="1"></textarea>
+                    <span class="icon delete center"><img src="/icons/trash.svg" alt=""></span>
+
+                    <div class="options center"> 
+
+                        <label class="option center"> <span class="remove"><img src="/icons/remove.svg" alt=""></span> a23456789<input type="radio" name="1"></label>
+                        <label class="option center"> <span class="remove"><img src="/icons/remove.svg" alt=""></span> b23456789<input type="radio" name="1"></label>
+                        <label class="option center"> <span class="remove"><img src="/icons/remove.svg" alt=""></span> c23456789<input type="radio" name="1"></label>
+                        
+                        <div class="add-q center">
+                            <input type="text" name="" id="add2" class="add" placeholder="Add option">
+                            <label class="underline"></label>
+                            <span class="icon"><img src="/icons/plus-square.svg" alt=""></span>
+                        </div>
+                        
+                    </div>
+                </div> -->
+                <div class="question-block center add-block">
+                </div>
+            </div>
+
+            <div class="center" style="margin: 2rem auto; max-width: 600px;"> 
+                <div class="center">
+                    <input type="checkbox" id="autosave" checked>
+                    <label for="autosave">save automatically every 30 sec</label>     
+                </div>
+                <button class="action active invert save" style="min-width: unset; margin-left: auto;" onclick="save(true)">SAVE</button>
+                
+            </div>
+        </div>
+        
+    </main>
+
+    <span class="message">
+        ...
+    </span>
+
+    <script>
+        $("[data-set]").each( function(){
+            this.value = moment( new Date($(this).attr("data-set")) ).format("yyyy-MM-DDThh:mm")
+        })
+    </script>
+</body>
+</html>

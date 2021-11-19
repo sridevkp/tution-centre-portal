@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rays Edu</title>
+
+    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="/styles/header.css">
+    <link rel="stylesheet" href="/icons/uicons-regular-rounded/css/uicons-regular-rounded.css">
+
+    <script>
+        var learn = <%- learn %>
+    </script>
+
+    <script src="/scripts/jquery.min.js"></script>
+    <script src="/scripts/utils.js"></script>
+    <script src="/scripts/index.js" defer></script>
+</head>
+<body>
+    <%-include('partials/header')%>
+
+    <% if( ! learn ){ %> 
+        <span class="nav-btn center">
+            <span class="fi fi-rr-menu-burger"></span>
+        </span>
+
+        <div class="content-nav">
+            <div class="content-nav-body">
+                <ul class="nav">
+                    <li> 
+                        <div class="nav-folder"><span class="fi fi-rr-caret-right"></span> <a href="" class="side-nav-link"> folder 1 </a></div>
+                        <ul class="nav">
+                            <li>
+                                <div class="nav-folder"><span class="fi fi-rr-caret-right"></span> <a href="" class="side-nav-link"> sub folder 1 </a></div>
+                                <ul class="nav">
+                                    <li>
+                                        <div class="nav-folder"><span class="fi fi-rr-caret-right"></span> <a href="" class="side-nav-link"> sub sub 1 </a></div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="nav-folder "><span class="fi fi-rr-caret-right"></span> <a href="" class="side-nav-link"> sub folder 1 </a></div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <div class="nav-folder"><span class="fi fi-rr-caret-right"></span> <a href="" class="side-nav-link"> folder 2 </a></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    <% } %> 
+
+    <main>
+
+        <div class="wrapper" id="app">
+            
+            <% if( learn ){ %>
+                <% courses.forEach( course => { %>
+                    <div class="course">
+                        <a href="/chapters/<%= course.id %>" class="course-content">
+                            <div class="course-img">
+                                <img src="<%= course.icon %>" alt="">
+                            </div>
+                            <div class="details">
+                                <div class="top">
+                                    <h1 class="course-title"><%= course.title %></h1>
+                                    <span class="course-link">CONTENTS</span>
+                                </div>
+                                <div class="bottom">
+                                    <span class="info">
+                                        <img src="/icons/chapter.svg" alt="">
+                                        <p><%= course.folders.length %> Chapters</p>
+                                    </span>
+                                    <span class="info">
+                                        <img src="/icons/content.svg" alt="">
+                                        <p><%= course.files.length %> Contents</p>
+                                    </span>
+                                    <div class="progress">
+                                        <div class="bar" data-value="10%" style="--val:10%"></div>
+                                        <p>10% complete</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                <% }) %>
+            <% }else{ %>
+                <section>
+                    
+                </section>
+            <% } %> 
+
+        </div>
+    </main>
+    <span class="message">
+        Loading pls wait
+    </span>
+
+
+    <script>
+        $(".burger").click( function(){
+            $("nav").toggleClass("show")
+        })
+
+        $("ul.nav ul.nav").slideUp( 0 )
+        $(".nav-folder").click(function( e ){
+            e.preventDefault()
+            $(this).children("span").toggleClass("rotate")
+            $(this).siblings("ul.nav").slideToggle( 200, "swing", function(){
+                //animation over
+            } )
+        })
+    </script>
+</body>
+</html>

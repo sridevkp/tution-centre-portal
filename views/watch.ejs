@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>watch</title>
+
+    <link rel="stylesheet" href="/styles/watch.css">
+    <link rel="stylesheet" href="/styles/header.css">
+    <link href="https://vjs.zencdn.net/7.15.4/video-js.css" rel="stylesheet" />
+
+    <script src="/scripts/jquery.min.js"></script>
+</head>
+<body>
+    <%-include('partials/header-simple')%>
+    <main>
+        <div class="wrapper" id="app">
+
+            <div class="video-wrap">
+                <video 
+                    id="my-video"
+                    class="video-js"
+                    controls
+                    preload="auto"
+                    data-setup='{"playbackRates": [0.25, 0.5, 1, 1.25, 1.5, 2, 3] }'
+                >
+                    <source src="/content/watch/<%= id %>" type="video/mp4">
+
+                    <p>To view this please enable javascript</p>
+                </video>
+            </div>
+            
+            <h3><%= title %></h3>
+            <p class="uploaded">Uploaded on <%= new Date(uploaded).toUTCString() %></li>
+
+            <div class="comments">
+
+                <h1 class="title">Comments</h1>
+
+                <form class="add-comment" method="POST">
+                    <textarea name="comment" id="my-comment" cols="30" rows="1" placeholder="Add Comment" oninput="textareaOnInput(this)"></textarea>
+                    <button id="send-comment">Comment <img src="/icons/comment.svg" alt="" class="icon"></button>
+                </form>
+
+                <div class="recent">
+                    <% comments.forEach(comment => { %>
+                        <div class="comment-body">
+                            <div class="dp">
+                                <img src="/uploads/default.png" alt="">
+                            </div>
+                            <div class="content">
+                                <div class="content-details">
+                                    <p class="username"><%= comment.username %></p>
+                                    <p class="date"> ~  <%= new Date(comment.datetime).toUTCString() %></p>
+                                </div>
+                                <p class="txt">
+                                    <%= comment.body %>
+                                </p>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script src="https://vjs.zencdn.net/7.15.4/video.min.js"></script>
+    <script>
+        const id = "<%= id %>"
+        const textarea = $("#my-comment")
+
+        function textareaOnInput( field ){
+            $(field).css( "height" , "" )
+            $(field).css( "height" , field.scrollHeight + 5 + 'px' )
+        }
+
+        document.getElementById("send-comment").addEventListener("click", function(e){
+            e.preventDefault()
+
+            const txtContent = textarea.val()
+            textarea.val("")
+            textareaOnInput( textarea )
+            
+            if( txtContent.toString().trim() == ""){
+                return alert("please enter something")
+            }
+
+            const data = {
+                username : "sridev",
+                datetime : new Date(),
+                body     : txtContent
+            }
+
+            fetch("/content/watch/"+id+"/comment", {
+                method : "POST",
+                body   : JSON.stringify( data ),
+                headers : {
+                    "content-type" : "application/json"
+                }
+            }).then( function( res ){
+                const commentBody = $("<div class='comment-body'></div>")
+
+                const dp = $("<div class='dp'></div>")
+                            .append($("<img src='/uploads/default.png'>"))
+
+                const contentDetails = $("<div class='content-details'></div>")
+                .append( $("<p class='username'>"+ data.username +"</p>") )
+                .append( $("<p class='date'>~"+ data.datetime.toUTCString() +"</p>"))
+
+                const content = $("<div class='content'></div>")
+                .append( contentDetails)
+                .append( $("<p class='txt'>"+ data.body +"</p>"))
+
+                $(".recent").append( commentBody.append( dp , content ) )
+
+            })
+        })
+    </script>
+</body>
+</html>

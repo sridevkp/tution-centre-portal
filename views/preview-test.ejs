@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/styles/exam.css">
+    <link rel="stylesheet" href="/styles/header.css">
+
+    <script src="/scripts/jquery.min.js"></script>
+    
+</head>
+<body>
+    <%-include('partials/header')%>
+
+    <% let from = new Date(xam.available.from)%>
+    <% let to = new Date(xam.available.to)%>
+
+    <main class="center">
+        <div class="wrapper">
+            <h2 class="title">Exam 2021-22 physics gravitation</h2>
+
+            <% if( result ){ %> 
+                <h3 class="sub-head"> previous attempts</h3>
+
+                <div class="block center">
+
+                    <div class="table center">
+
+                        <div class="tb th center">
+                            <% if( result.state == "submit"){ %> 
+                                <% let clr = result.marks >= xam.passMarks ? "rgb(3, 180, 3)" : "rgb(252, 57, 57)" %> 
+                                
+                                <div class="table-item">Date</div>
+                                <div class="table-item" data-clr="<%= clr %>">Score</div>
+                                <div class="table-item optional">Correct</div>
+                                <div class="table-item optional">Incorrect</div>
+                                <div class="table-item optional">Unanswered</div>
+                                <div class="table-item optional">Percentage</div>
+                                <div class="table-item">Rank</div>
+                            <% }else{ %>
+                                <div class="table-item">Status</div>
+                                <div class="table-item">Time Left</div>
+                            <% } %>  
+                        </div>
+                        <div class="tb center">
+                            <% if( result.state == "submit"){ %> 
+                                <% let clr = result.marks >= xam.passMarks ? "rgb(3, 180, 3)" : "rgb(252, 57, 57)" %> 
+
+                                <div class="table-item"><%= new Date(result.date).toLocaleDateString(undefined, {day:'2-digit', month:'short',year:"numeric"}) %> </div>
+                                <div class="table-item" data-clr="<%= clr %>"><%= result.marks + " /" + xam.marks.max %></div>
+                                <div class="table-item optional"><%= result.correct + " /" + xam.questions.length %></div>
+                                <div class="table-item optional"><%= result.wrong %></div>
+                                <div class="table-item optional"><%= result.unattempted %></div>
+                                <div class="table-item optional"><%= result.percentage + "%" %></div>
+                                <div class="table-item"><%= result.rank %> </div>
+                            <% }else{ %>
+                                
+                                <% let hrs  = Math.floor(result.timeLeft / 3600).toString() %> 
+                                <% let mins = ( Math.floor(result.timeLeft / 60 ) % 60 ).toString() %> 
+                                <% let secs = ( result.timeLeft % 60  ).toString() %> 
+                                
+                                <div class="table-item"><%= result.state %> </div>
+                                <div class="table-item"> <%= hrs.padStart(2,"00") %>:<%= mins.padStart(2,"00") %>:<%= secs.padStart(2,"00") %> </div>
+                            <% } %>  
+                        </div>
+
+                    </div>
+                    
+                </div>
+            <% } %> 
+            <h3 class="sub-head">Exam Details</h3>
+
+            <div class="block details center">
+
+                <!-- <div class="exam-info center">
+                    <div class="exam-icon center">
+                        <img src="/icons/clock.png" alt="">
+                    </div>
+                    <div class="info">
+                        <p class="val"><%= from.toLocaleDateString(undefined, {day:'2-digit', month:'short'}) %> <%= from.toLocaleTimeString([], {timeStyle: 'short'}) %></p>
+                        <p class="key">starting time</p>
+                    </div>
+                </div>
+
+                <div class="exam-info center">
+                    <div class="exam-icon center">
+                        <img src="/icons/clock.png" alt="">
+                    </div>
+                    <div class="info">
+                        <p class="val"><%= to.toLocaleDateString(undefined, {day:'2-digit', month:'short'}) %> <%= to.toLocaleTimeString([], {timeStyle: 'short'}) %></p>
+                        <p class="key">ending time</p>
+                    </div>
+                </div> -->
+
+                <div class="exam-info center">
+                    <div class="exam-icon center">
+                        <img src="/icons/duration.svg" alt="">
+                    </div>
+                    <div class="info">
+                        <% let hrs  = Math.floor(xam.duration / 3600).toString() %> 
+                        <% let mins = ( Math.floor(xam.duration / 60 ) % 60 ).toString() %> 
+                        <% let secs = ( xam.duration % 60  ).toString() %> 
+                        <p class="val"><%= hrs.padStart(2,"00") %>:<%= mins.padStart(2,"00") %>:<%= secs.padStart(2,"00") %></p>
+                        <p class="key">duration</p>
+                    </div>
+                </div>
+
+                <div class="exam-info center">
+                    <div class="exam-icon center">
+                        <img src="/icons/questions.svg" alt="">
+                    </div>
+                    <div class="info">
+                        <p class="val"><%= xam.questions.length %></p>
+                        <p class="key">questions</p>
+                    </div>
+                </div>
+
+                <div class="exam-info center">
+                    <div class="exam-icon center">
+                        <img src="/icons/trophies.svg" alt="">
+                    </div>
+                    <div class="info">
+                        <p class="val"><%= xam.trophies %></p>
+                        <p class="key">trophies</p>
+                    </div>
+                </div>
+
+                <div class="exam-info center">
+                    <div class="exam-icon center">
+                        <img src="/icons/passmark.svg" alt="">
+                    </div>
+                    <div class="info">
+                        <p class="val"><%= xam.passMarks %></p>
+                        <p class="key">pass mark</p>
+                    </div>
+                </div>
+
+                <div class="exam-info center">
+                    <div class="exam-icon center">
+                        <img src="/icons/correct-ans.svg" alt="">
+                    </div>
+                    <div class="info">
+                        <p class="val" style="color: rgb(3, 180, 3);">+<%= xam.marks.correct %> mark for </p>
+                        <p class="key">correct answer</p>
+                    </div>
+                </div>
+
+                <div class="exam-info center">
+                    <div class="exam-icon center">
+                        <img src="/icons/wrong-ans.svg" alt="">
+                    </div>
+                    <div class="info">
+                        <p class="val" style="color : rgb(252, 57, 57)"><%= xam.marks.wrong %> mark for</p>
+                        <p class="key">wrong answer</p>
+                    </div>
+                </div>
+
+                <div class="exam-info center">
+                    <div class="exam-icon center">
+                        <img src="/icons/exam-comments.svg" alt="">
+                    </div>
+                    <div class="info">
+                        <p class="val"><%= xam.comments.length %></p>
+                        <p class="key">comments</p>
+                    </div>
+                </div>
+
+                <div class="exam-info center">
+                    <div class="exam-icon center">
+                        <img src="/icons/attempted.svg" alt="">
+                    </div>
+                    <div class="info">
+                        <p class="val"><%= xam.attempted %></p>
+                        <p class="key">attempted this</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <div class="fixed-nav center">
+
+        <div class="exam-action center">
+
+            <%if( from > new Date() ){%>
+                <a class="action invert disabled">COME BACK LATER </a>
+            <% }else if( to > new Date() ){ %>
+
+                <% if( result ){ %>
+
+                    <% if( result.state == "submit"){ %>
+                        <a class="action invert disabled"> EXAM COMPLETED </a>
+                    <% }else{ %>
+                        <a href="/learn/test/<%= xam.id %>/attempt" class="action invert active" id="start">RESUME </a>
+                    <% } %>   
+
+                <% }else{ %>  
+                    <a href="/learn/test/<%= xam.id %>/attempt" class="action invert active" id="start"> START EXAM</a>
+                <% } %> 
+
+            <% }else{ %>
+                <a class="action invert disabled">TIME OVER</a>
+            <% } %>
+
+            <a href="/learn" class="action">GO BACK</a>
+        </div>
+
+        <div class="exam-status center">
+            <% let day = from.toLocaleDateString('en-US', { weekday: 'long' })%>
+          
+            <%if( from > new Date() ){%>
+                Exam begins soon ( <%= from.toLocaleDateString(undefined, {day:'2-digit', month:'short'}) %> <%= from.toLocaleTimeString([], {timeStyle: 'short'}) %> )
+            <% }else if( to > new Date() ){ %>
+                Exam has started, All the best
+            <% }else{%>
+                This exam has ended
+            <% }%>
+        </div>
+
+    </div>
+
+    <script>
+        var pathname = window.location.pathname
+        var examWindow ;
+
+        if( pathname.slice(-1) == "/"){
+            pathname = pathname.slice(0,-1)
+        }
+
+        $(".burger").click( function(){
+            $("nav").toggleClass("show")
+        })
+        $("#start").click(function(e){
+            e.preventDefault()
+            examWindow = window.open(pathname + "/attempt",'exam','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=720,height=1080');
+        })
+        
+        $("[data-clr]").each(function(){
+            $(this).css( "color", $(this).attr("data-clr"))
+        })
+        
+        function endExam(){
+            console.log("closed")
+            if( examWindow ){ examWindow.close() }
+        }
+    </script>
+</body>
+</html>

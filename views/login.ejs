@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/styles/login.css">
+    <script src="/scripts/jquery.min.js"></script>
+</head>
+<body>
+    <nav>
+        <img src="/images/rays_edu.png" alt="" class="title-img">
+        <ul>
+            <li> <a href="/learn">LEARN</a>                  </li>
+            <li> <a href="/login" class="active">LOGIN</a> </li>
+            <li> <a href="#">POSTS</a>                     </li>
+            <li> <a href="#">CONTACTS</a>                  </li>
+        </ul>
+        <span class="burger" onclick="toggleMoreOptions()">
+            <img src="/icons/burger.svg" alt="">
+        </span>
+    </nav>
+    <div class="wrapper">
+        <div class="head">
+
+            <% if( url == "/login"){ %> 
+                <h3>Login</h3>
+            <% }else{ %>
+                <h3>Register</h3>
+            <% } %> 
+
+        </div>
+        <form action="<%= url %> " method="POST" autocomplete="off">
+
+            <div class="input-field" title="username field">
+                <label for="username">Name : </label>
+                <input autofocus type="text" name="username" id="username" placeholder="Your name">
+            </div>
+            <div class="input-field" title="password must be minimum 6 characters">
+                <label for="password">Password : </label>
+                <input type="password" name="password" id="password" placeholder="Enter password">
+            </div>
+
+            <% if( url == "/login"){ %> 
+                <div class="input-field">
+                    <a href="#" class="forgot" style="width: 200px;">Forgot your password?</a>
+                </div>
+            <% } %> 
+
+            <div class="input-field">
+                <input id="submit" type="submit" value="<%= method %>">
+            </div>
+            <hr>
+
+            <% if( url == "/login"){ %> 
+                <a href="/register" style="text-align: center;">haven't registered yet ? register now 🔗</a>
+            <% }else{ %>
+                <a href="/login" style="text-align: center;">already registered? login now 🔗</a>
+            <% } %> 
+
+        </form>
+    </div>
+     <script>
+         const URL = `<%= url %>`
+         
+         function toggleMoreOptions(){
+             const nav = document.querySelector("nav")
+
+             nav.classList.toggle("show")
+         }
+         
+         const form = document.forms[0]
+         
+         form.addEventListener("submit", function( e ){
+             e.preventDefault()
+
+             const username = form.username.value
+             const password = form.password.value
+
+             if( ! isValid( username )){
+                return alert("please enter a username")
+             }
+             if( ! isValid(  password )){
+                return alert( "please enter password")
+             }
+             if( password.length < 6){
+                return alert( "password must be atleast 6 characters")
+             }
+
+             const data = {
+                username,
+                password,
+             }
+
+            $.post( URL, data, function( response ){
+                alert( response.msg )
+
+                if( response.redirect ){
+                    window.location.href = response.redirect 
+                }
+            })
+
+            })
+
+         function isValid( txt ){
+            return txt.trim().toString() !== "" 
+         }
+
+     </script>
+</body>
+</html>

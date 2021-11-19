@@ -1,0 +1,114 @@
+.nav-main{
+    width: 100%;
+    height: 5.5rem;
+    margin: auto;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    transition: 0.3s;
+}
+
+.nav-main ul{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    list-style: none;
+}
+
+.nav-main ul li:last-child{
+    margin-left: auto;
+}
+
+.nav-main li{
+    margin-right: 1rem ;
+    padding: 0 1rem 4px 1rem ;
+}
+
+.nav-main a{
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #555;
+    font-weight: 600;
+}
+.nav-main li.active{
+    color: #337ab7;
+    padding-bottom: 0;
+    border-bottom: 4px solid #337ab7;
+}
+.nav-main li:hover{
+    padding-bottom: 0;
+    border-bottom: 4px solid rgba(0, 0, 0, 0.3)
+}
+
+.nav-main p{
+    margin: 0.3rem;
+}
+img.icon{
+    width: 1rem;
+    height: 1rem;
+}
+img.small{
+    margin-left: 0.5rem;
+    width: 0.6rem;
+    height: 0.6rem;
+}
+
+.title-img{
+    min-height: 3rem;
+    max-width: 250px;
+    margin: 1rem auto 1.5rem 2rem;
+}
+.burger{
+    padding: 0.3rem 0.6rem;
+    background-color: rgb(160, 160, 160);
+    position: absolute;
+    right: 2rem;
+    top: 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    display: none;
+    opacity: 0.5;
+}
+.burger:hover{
+    transform: scale(1.05);
+}
+.burger svg{
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+@media only screen and (max-width: 700px) {
+    .nav-main{
+        flex-direction: column;
+        justify-content: flex-start;
+        overflow: hidden;
+        gap: 0;
+    }
+    .burger{
+        display: block;
+    }
+    .nav-main ul{
+        flex-direction: column;
+        width: 70%;
+    }
+    .nav-main ul li:last-child{
+        margin-left: unset;
+    }
+    .nav-main li{
+        width: 100%;
+        margin: 0.5rem 0;
+        margin-bottom: 0.5rem;
+    }
+    .nav-main.show{
+        height: 260px;
+        max-height: unset;
+    }
+    .title-img{
+        margin-left: 2rem;
+        max-width: 60%;
+    }
+}

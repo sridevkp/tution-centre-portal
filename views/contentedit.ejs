@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rays Edu</title>
+
+    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="/styles/contentedit.css">
+    <link rel="stylesheet" href="/styles/header.css">
+    
+    <script>
+        var home = <%- home %>
+    </script>
+
+    <script src="/scripts/jquery.min.js"></script>
+    <script src="/scripts/utils.js" defer></script>
+    <script src="/scripts/contentedit.js" defer></script>
+
+</head>
+<body>
+    <%-include('partials/header-simple')%>
+
+    <main>
+        <div class="wrapper" id="app">
+            <% if( home ){ %>
+                <% courses.forEach( course => { %>
+                    <div class="course">
+                        <a href="/content/edit/<%= course.id %>" class="course-content">
+                            <div class="course-img">
+                                <img src="<%= course.icon %>" alt="">
+                            </div>
+                            <div class="details">
+                                <div class="top">
+                                    <h1 class="course-title"><%= course.title %></h1>
+                                    <span class="course-link">CONTENTS</span>
+                                </div>
+                                <div class="bottom">
+                                    <span class="info">
+                                        <img src="/icons/chapter.svg" alt="">
+                                        <p><%= course.folders.length %> Chapters</p>
+                                    </span>
+                                    <span class="info">
+                                        <img src="/icons/content.svg" alt="">
+                                        <p><%= course.files.length %> Contents</p>
+                                    </span>
+                                    <div class="progress">
+                                        <div class="bar" data-value="10%" style="--val:10%"></div>
+                                        <p>10% complete</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                <% }) %>
+            <% }else{%>
+                <noscript>plees enable javascript</noscript>
+            <% } %>
+            
+        </div>
+
+        <div class="overlay">
+        </div> 
+
+        <div class="options">
+            <ul>
+                <li class="delete">
+                    <img src="/icons/trash.svg" alt="" class="icon">
+                    <p>Delete</p>
+                </li>
+                <li class="rename">
+                    <img src="/icons/bold.svg" alt="" class="icon">
+                    <p>Rename</p>
+                </li>
+                <li class="change">
+                    <img src="/icons/icon.svg" alt="" class="icon">
+                    <p>Change image</p>
+                </li>
+            </ul>
+        </div>
+
+        <span class="message">
+            Loading pls wait
+        </span>
+        
+        <div class="popup" id="confirm">
+            <p class="txt">
+                are you sure ?
+            </p>
+            <div class="btns">
+                <button class="btn" id="cancel" onclick="unconfirm()">Cancel</button>
+                <button class="btn invert" id="yes">Yes</button>
+            </div>
+        </div>
+
+        <div class="popup" id="prompt"> 
+            <p class="txt">
+                please enter new name
+            </p>
+            <input type="text" id="prompt-input" placeholder="enter here!">
+            <div class="btns">
+                <button class="btn" id="abort">Cancel</button>
+                <button class="btn invert" id="continue">Commit</button>
+            </div>
+        </div> 
+
+        <div class="popup" id="uploader">
+            <form action="">
+                <div class="thumbnail" data-label="no file selected">
+                    <input type="file" name="file" id="file" >
+                </div>
+            </form>
+            
+            <div class="btns">
+                <button class="btn" id="cancel" onclick="abortLoader()">Cancel</button>
+                <button class="btn invert" id="upload" >Upload</button>
+            </div>
+        </div>
+
+        <div class="popup" id="library-view">
+            <div class="library-container">
+
+            </div>
+            <div class="btns">
+                <button class="btn" id="cancel" onclick="abortLibrary()">Cancel</button>
+                <button class="btn invert" id="custom">Custom</button>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teachers portal</title>
+
+    <link rel="stylesheet" href="/styles/admin.css">
+    <link rel="stylesheet" href="/styles/header.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <%-include('partials/header-simple')%>
+    <main>
+        <div class="wrapper">
+            <div class="column1">
+                <div class="block">
+                    <a href="/learn/">
+                        <img src="/icons/graduation.svg" alt="" class="icon">
+                        <p>View content</p>
+                    </a>
+                </div>
+                <div class="block">
+                    <a href="/content/edit">
+                        <img src="/icons/add.svg" alt="" class="icon" style="transform: rotate(45deg);">
+                        <p>Add & edit content</p>
+                    </a>
+                </div>
+                <div class="block">
+                    <a href="#">
+                        <img src="/icons/posts.svg" alt="" class="icon">
+                        <p>Post</p>
+                    </a>
+                </div>
+                <div class="block">
+                    <a href="#">
+                        <img src="/icons/bookmark.svg" alt="" class="icon">
+                        <p>Bookmarks</p>
+                    </a>
+                </div>
+            </div>
+            <div class="column2">
+                <div class="block dp flex-center">
+                    <img src="<%= dp %>" alt="">
+                </div>
+                <div class="block">
+                    <p class="bold">● <%= name %></p>
+                </div>
+                <div class="block">
+                    <p class="bold">● <%= batch %></p>
+                </div>
+                <div class="block">
+                    <img src="/icons/sign-out.svg" alt="" class="icon">
+                    <a href="/admin/logout">logout</a>
+                </div>
+            </div>
+        </div>
+        
+    </main>
+
+    
+</body>
+</html>

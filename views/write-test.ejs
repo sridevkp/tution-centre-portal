@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/styles/exam-attempt.css">
+
+    <script src="/scripts/jquery.min.js"></script>
+    <script src="/scripts/utils.js" defer></script>
+    <script src="/scripts/write-test.js" defer></script>
+
+    <script>
+        var data = JSON.parse( '<%- json %>' )
+    </script>
+</head>
+<body>
+    <% let from = new Date( xam.available.from ) %>
+    <% let to   = new Date( xam.available.to ) %>
+    <% let end  = to //( to > lastAttempt.endTime ? lastAttempt.endTime : to )%> 
+    
+    <nav class="nav-main center">
+        <img src="/images/rays_edu.png" alt="" class="title-img">
+        <div class="time-info center">
+            <div class="timer green" data-tym="<%= userdata.timeLeft || xam.duration  %>">00:00:00</div>
+            <div class="end-time">exam ends at <%= to.toLocaleTimeString([], {timeStyle: 'short'}) %></div>
+        </div>
+    </nav>
+    <main class="center">
+        <section class="main-content">
+            <div class="questions">
+                <% xam.questions.forEach( ( q, index ) => { %> 
+                    <div class="question center" data-index="<%= index %>">
+
+                        <div class="q-box center">
+                            <p class="index-no">
+                                <%= index + 1 %> 
+                            </p>
+                            <div class="q">
+                                <%= q.question %>       
+                            </div>
+                        </div>
+        
+                        <div class="options-wrapper">
+                            <div class="options center">
+                                <% q.options.forEach( (option, opIndex ) => { %> 
+                                    <label class="option">
+                                        <% const checked = userdata.answers && userdata.answers[index] && userdata.answers[index] == opIndex %>
+                                        
+                                        <% if( checked){ %> 
+                                            <input type="radio" name="radio-<%= index %>" checked>
+                                        <% }else{ %> 
+                                            <input type="radio" name="radio-<%= index %>" >
+                                        <% } %> 
+
+                                        <span class="radio"></span>
+                                        <p class="option-content">
+                                            <%= option %>
+                                        </p>
+                                    </label>
+                                <% }) %> 
+                            </div>
+                        </div>
+        
+                        <div class="selections center">
+                            <button class="action ded center"      onclick="show('<%- index - 1%>')">       <img src="/icons/arrow-left.svg" alt="" class="icon"> previous</button>
+                            <button class="action purple-bg clear" onclick="mark(this,'<%- index %>')">  Mark for later </button>
+                            <button class="action red-bg clear"    onclick="clearSelection('<%- index %>')">Clear response </button>
+                            <button class="action ded center"      onclick="show('<%- index + 1%>')">       next           <img src="/icons/arrow-right.svg" alt="" class="icon"> </button>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </section>
+
+        <section class="exam-nav">
+            <div class="q-wrapper">
+                <div class="q-index">
+                    <% xam.questions.forEach(( q, index ) => { %>
+                        <% let suffix = (userdata.answers && userdata.answers[index] && userdata.answers[index] != "") ? " good" : " bad" %> 
+                        <% suffix = ( userdata.answers ) ? suffix : "" %> 
+                        <span class="q-index-span<%= suffix %>" onclick="show('<%- index %>')"><%= index + 1 %></span>
+                    <% }) %> 
+                </div>
+            </div>
+            <div class="actions center">
+                <button class="action" onclick="pause()">PAUSE</button>
+                <button class="action invert" onclick="submit()">SUBMIT/END</button>
+            </div>
+        </section>
+        
+    </main>
+
+    <div class="overlay"></div>
+
+    <div class="popup" id="confirm">
+        <p class="txt">
+            are you sure ?
+        </p>
+        <div class="btns">
+            <button class="btn" id="cancel" onclick="unconfirm()">Cancel</button>
+            <button class="btn invert" id="yes">Yes</button>
+        </div>
+    </div>
+
+    <div class="popup center loading" id="loading">
+        <div class="load-gif">
+            <img src="/icons/loading-circle.gif" alt="" class="icon">
+        </div>
+        <p class="txt">
+            are you sure ?
+        </p>
+    </div>
+
+</body>
+</html>
